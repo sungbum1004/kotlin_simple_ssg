@@ -1,3 +1,5 @@
+import java.lang.NullPointerException
+
 fun readLineTrim() = readLine()!!.trim()
 
 fun main() {
@@ -5,12 +7,11 @@ fun main() {
 
     while (true) {
         print("명령어) ")
-        val command = readLineTrim() // 입력 : /article/detail?id=1&title=제목1
+        val command = readLineTrim() // 입력 : /article/detail
 
         val rq = Rq(command)
-
-        println(rq.getStringParam("title") == "제목1") // true
-        println(rq.getIntParam("id") == 1) // true
+        println(rq.getStringParam("title", "1") == "1") // true
+        //println(rq.getIntParam("id") == 1) // true
     }
 
     println("== SIMPLE SSG 끝 ==")
@@ -35,11 +36,9 @@ class Rq(command: String) {
         } else {
             val paramMapTemp = mutableMapOf<String, String>()
 
-            // queryStr = id=1&body=2&title=3&age
             val queryStrBits = queryStr.split("&")
 
             for (queryStrBit in queryStrBits) {
-                // queryStrBit = id=1
                 val queryStrBitBits = queryStrBit.split("=", limit = 2)
                 val paramName = queryStrBitBits[0]
                 val paramValue = if (queryStrBitBits.lastIndex == 1 && queryStrBitBits[1].isNotEmpty()) {
@@ -56,12 +55,31 @@ class Rq(command: String) {
             paramMapTemp.toMap()
         }
     }
-    fun getStringParam(name: String): String {
-        return paramMap[name]!!
+
+    fun getStringParam(name: String, default: String): String {
+        return paramMap[name] ?: default
+
+        /*
+        // v2
+        return if (paramMap[name] == null) {
+            default
+        } else {
+            paramMap[name]!!
+        }
+        */
+
+        /*
+        // v1
+        return try {
+            paramMap[name]!!
+        }
+        catch ( e: NullPointerException ) {
+            default
+        }
+        */
     }
+
     fun getIntParam(name: String): Int {
         return paramMap[name]!!.toInt()
     }
 }
-
-
