@@ -5,12 +5,14 @@ class ArticleController {
             return
         }
 
+        print("게시판을 선택(공지사항=1, 자유=2) : ")
+        val boardId = readLineTrim().toInt()
         print("제목 : ")
         val title = readLineTrim()
         print("내용 : ")
         val body = readLineTrim()
 
-        val id = articleRepository.addArticle(loginedMember!!.id, title, body)
+        val id = articleRepository.addArticle(boardId, loginedMember!!.id, title, body)
 
         println("${id}번 게시물이 추가되었습니다.")
     }
@@ -108,12 +110,14 @@ class ArticleController {
 
         val filteredArticles = articleRepository.getFilteredArticles(searchKeyword, page, 10)
 
-        println("번호 / 작성날짜 / 작성자 / 제목 / 내용")
+        println("번호 / 작성날짜 / 게시물종류 / 작성자 / 제목 / 내용")
 
         for (article in filteredArticles) {
+            val board = boardRepository.getBoardById(article.boardId)!!
             val writer = memberRepository.getMemberById(article.memberId)!!
             val writerName = writer.nickname
-            println("${article.id} / ${article.regDate} / ${writerName} / ${article.title}")
+            val boardName = board.name
+            println("${article.id} / ${article.regDate} / ${boardName} / ${writerName} / ${article.title}")
         }
     }
 }

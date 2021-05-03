@@ -48,4 +48,14 @@ class BoardRepository {
 
         return id
     }
+
+    fun getBoardById(id: Int): Board? {
+        for (board in boards) {
+            if (board.id == id) {
+                return board
+            }
+        }
+
+        return null
+    }
 }
