@@ -110,7 +110,7 @@ class ArticleController {
 
         val filteredArticles = articleRepository.getFilteredArticles(searchKeyword, page, 10)
 
-        println("번호 / 작성날짜 / 게시물종류 / 작성자 / 제목 / 내용")
+        println("번호 / 작성날짜 / 게시물종류 / 작성자 / 제목")
 
         for (article in filteredArticles) {
             val board = boardRepository.getBoardById(article.boardId)!!

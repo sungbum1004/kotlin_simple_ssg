@@ -16,6 +16,8 @@ fun main() {
     val articleController = ArticleController()
     val memberController = MemberController()
 
+    loginedMember = memberRepository.getMemberById(1)
+
     while (true) {
         val prompt = if (loginedMember == null) {
             "명령어) "
