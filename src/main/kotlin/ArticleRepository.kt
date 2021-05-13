@@ -70,6 +70,8 @@ class ArticleRepository {
         return id
     }
 
+    // 정말로 필요할 때만 쓰세요.
+    // 영속성 때문에, 이제는 그닥 필요 없을듯
     fun makeTestArticles() {
         for (id in 1..20) {
             addArticle(id % 2 + 1, id % 9 + 1, "제목_$id", "내용_$id")
@@ -83,6 +85,9 @@ class ArticleRepository {
         article.title = title
         article.body = body
         article.updateDate = Util.getNowDateStr()
+
+        val jsonStr = article.toJson()
+        writeStrFile("data/article/${article.id}.json", jsonStr)
     }
 
     fun getFilteredArticles(
