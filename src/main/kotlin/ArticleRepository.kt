@@ -6,15 +6,22 @@ class ArticleRepository {
 
         for (id in 1..lastId) {
             val article = articleFromFile("data/article/$id.json")
-            
-            articles.add(article)
+
+            if ( article != null ) {
+                articles.add(article)
+            }
         }
 
         return articles
     }
 
-    fun articleFromFile(jsonFilePath: String): Article {
+    fun articleFromFile(jsonFilePath: String): Article? {
         val jsonStr = readStrFromFile(jsonFilePath)
+
+        if (jsonStr == "") {
+            return null
+        }
+
         val map = mapFromJson(jsonStr)
 
         val id = map["id"].toString().toInt()
@@ -39,11 +46,13 @@ class ArticleRepository {
     }
 
     fun deleteArticle(article: Article) {
-        // 파일 삭제
+        deleteFile("data/article/${article.id}.json")
     }
 
     fun getArticleById(id: Int): Article? {
-        // 파일에서 객체 얻기, 구현
+        val article = articleFromFile("data/article/$id.json")
+
+        return article
         return null
     }
 
@@ -58,7 +67,7 @@ class ArticleRepository {
 
         setLastId(id)
 
-        return 0
+        return id
     }
 
     fun makeTestArticles() {
