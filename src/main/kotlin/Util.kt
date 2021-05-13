@@ -40,7 +40,6 @@ fun mapFromJson(jsonStr: String): Map<String, Any> {
 }
 
 fun readStrFromFile(filePath: String): String {
-
     if ( !File(filePath).isFile ) {
         return ""
     }
@@ -53,8 +52,14 @@ fun writeStrFile(filePath: String, fileContent: String) {
     File(filePath).writeText(fileContent)
 }
 
-fun readIntFromFile(filePath: String): Int {
-    return readStrFromFile(filePath).toInt()
+fun readIntFromFile(filePath: String, default:Int): Int {
+    val fileContent = readStrFromFile(filePath)
+
+    if ( fileContent == "" ) {
+        return default
+    }
+
+    return fileContent.toInt()
 }
 
 fun writeIntFile(filePath: String, fileContent: Int) {

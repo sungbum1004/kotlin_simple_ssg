@@ -7,7 +7,7 @@ class ArticleRepository {
         for (id in 1..lastId) {
             val article = articleFromFile("data/article/$id.json")
 
-            if ( article != null ) {
+            if (article != null) {
                 articles.add(article)
             }
         }
@@ -36,7 +36,7 @@ class ArticleRepository {
     }
 
     fun getLastId(): Int {
-        val lastId = readIntFromFile("data/article/lastId.txt")
+        val lastId = readIntFromFile("data/article/lastId.txt", 0)
 
         return lastId
     }
@@ -53,10 +53,9 @@ class ArticleRepository {
         val article = articleFromFile("data/article/$id.json")
 
         return article
-        return null
     }
 
-    fun addArticle(boardId: Int, memberId: Int, title: String, body: String): Int {
+    fun WriteArticle(boardId: Int, memberId: Int, title: String, body: String): Int {
         val id = getLastId() + 1
         val regDate = Util.getNowDateStr()
         val updateDate = Util.getNowDateStr()
@@ -74,9 +73,8 @@ class ArticleRepository {
     // 영속성 때문에, 이제는 그닥 필요 없을듯
     fun makeTestArticles() {
         for (id in 1..20) {
-            addArticle(id % 2 + 1, id % 9 + 1, "제목_$id", "내용_$id")
+            WriteArticle(id % 2 + 1, id % 9 + 1, "제목_$id", "내용_$id")
         }
-
     }
 
     fun modifyArticle(id: Int, title: String, body: String) {
@@ -88,6 +86,8 @@ class ArticleRepository {
 
         val jsonStr = article.toJson()
         writeStrFile("data/article/${article.id}.json", jsonStr)
+
+        // 파일 수정
     }
 
     fun getFilteredArticles(
@@ -110,6 +110,7 @@ class ArticleRepository {
         if (boardCode.isEmpty() && searchKeyword.isEmpty()) {
             return articles
         }
+
         val filteredArticles = mutableListOf<Article>()
 
         val boardId = if (boardCode.isEmpty()) {
@@ -119,7 +120,6 @@ class ArticleRepository {
         }
 
         for (article in articles) {
-
             if (boardId != 0) {
                 if (article.boardId != boardId) {
                     continue

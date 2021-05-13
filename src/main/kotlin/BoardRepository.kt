@@ -12,13 +12,6 @@ class BoardRepository {
         makeBoard("자유", "free")
     }
 
-    /*
-   @JvmName("getBoards1")
-   fun getBoards(): MutableList<Board> {
-       return boards
-   }
-   */
-
     fun getFilteredBoards(): List<Board> {
         return boards
     }

@@ -10,12 +10,22 @@ class MemberRepository {
         cellphoneNo: String,
         email: String
     ): Int {
-        val id = ++lastId
+        val id = getLastId() + 1
         val regDate = Util.getNowDateStr()
         val updateDate = Util.getNowDateStr()
         members.add(Member(id, regDate, updateDate, loginId, loginPw, name, nickname, cellphoneNo, email))
 
         return id
+    }
+
+    fun getLastId(): Int {
+        val lastId = readIntFromFile("data/member/lastId.txt", 0)
+
+        return lastId
+    }
+
+    fun setLastId(newLastId: Int) {
+        writeIntFile("data/member/lastId.txt", newLastId)
     }
 
     fun isJoinableLoginId(loginId: String): Boolean {

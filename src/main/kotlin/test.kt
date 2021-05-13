@@ -1,4 +1,3 @@
-
 fun main() {
     // 이런식으로 테스트 가능
     //memberRepository.getMembers()
@@ -10,8 +9,6 @@ fun main() {
     //testReadFile2();
     //testReadFile3();
 }
-
-
 
 data class TestArticle(
     val id: Int,
@@ -44,7 +41,7 @@ data class TestArticle(
 
 fun testReadFile3() {
     writeIntFile("test/4.txt", 100)
-    val num = readIntFromFile("test/4.txt")
+    val num = readIntFromFile("test/4.txt", 0)
 
     println("num : $num")
 }
@@ -75,8 +72,6 @@ fun testArticleFromJson(jsonStr: String): TestArticle {
 
     return TestArticle(id, title, body)
 }
-
-
 
 fun testReadFile() {
     testWriteFile()
@@ -111,4 +106,4 @@ fun testWriteFile2() {
 
 fun testWriteFile() {
     writeStrFile("test/1.txt", "안녕하세요.")
-} 
+}

@@ -9,12 +9,12 @@ class BoardController {
         }
     }
 
-    fun add(rq: Rq) {
+    fun make(rq: Rq) {
         print("게시판 이름 : ")
         val name = readLineTrim()
         val boardByName = boardRepository.getBoardByName(name)
 
-        if (boardByName != null) {
+        if ( boardByName != null ) {
             println("`${name}`(은)는 이미 존재하는 게시판 이름 입니다.")
 
             return
@@ -24,7 +24,7 @@ class BoardController {
         val code = readLineTrim()
         val boardByCode = boardRepository.getBoardByCode(code)
 
-        if (boardByCode != null) {
+        if ( boardByCode != null ) {
             println("`${code}`(은)는 이미 존재하는 게시판 코드 입니다.")
 
             return
