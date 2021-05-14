@@ -1,7 +1,4 @@
 class MemberRepository {
-    private val members = mutableListOf<Member>()
-    private var lastId = 0
-
     fun join(
         loginId: String,
         loginPw: String,
@@ -13,7 +10,10 @@ class MemberRepository {
         val id = getLastId() + 1
         val regDate = Util.getNowDateStr()
         val updateDate = Util.getNowDateStr()
-        members.add(Member(id, regDate, updateDate, loginId, loginPw, name, nickname, cellphoneNo, email))
+        val member = Member(id, regDate, updateDate, loginId, loginPw, name, nickname, cellphoneNo, email)
+
+        writeStrFile("data/member/${member.id}.json", member.toJson())
+        setLastId(id)
 
         return id
     }
@@ -35,9 +35,15 @@ class MemberRepository {
     }
 
     fun getMemberByLoginId(loginId: String): Member? {
-        for (member in members) {
-            if (member.loginId == loginId) {
-                return member
+        val lastId = getLastId()
+
+        for (id in 1..lastId) {
+            val member = memberFromFile("data/member/$id.json")
+
+            if ( member != null ) {
+                if ( member.loginId == loginId ) {
+                    return member
+                }
             }
         }
 
@@ -51,13 +57,30 @@ class MemberRepository {
     }
 
     fun getMemberById(id: Int): Member? {
-        for (member in members) {
-            if (member.id == id) {
-                return member
-            }
-        }
+        val member = memberFromFile("data/member/$id.json")
 
-        return null
+        return member
     }
 
+    fun memberFromFile(jsonFilePath: String): Member? {
+        val jsonStr = readStrFromFile(jsonFilePath)
+
+        if (jsonStr == "") {
+            return null
+        }
+
+        val map = mapFromJson(jsonStr)
+
+        val id = map["id"].toString().toInt()
+        val regDate = map["regDate"].toString()
+        var updateDate = map["updateDate"].toString()
+        var loginId = map["loginId"].toString()
+        var loginPw = map["loginPw"].toString()
+        var name = map["name"].toString()
+        var nickname = map["nickname"].toString()
+        var cellphoneNo = map["cellphoneNo"].toString()
+        var email = map["email"].toString()
+
+        return Member(id, regDate, updateDate, loginId, loginPw, name, nickname, cellphoneNo, email)
+    }
 }

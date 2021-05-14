@@ -61,8 +61,8 @@ class ArticleRepository {
         val updateDate = Util.getNowDateStr()
 
         val article = Article(id, regDate, updateDate, boardId, memberId, title, body)
-        val jsonStr = article.toJson()
-        writeStrFile("data/article/${article.id}.json", jsonStr)
+        //val jsonStr = article.toJson()
+        writeStrFile("data/article/${article.id}.json", article.toJson())
 
         setLastId(id)
 
@@ -84,8 +84,8 @@ class ArticleRepository {
         article.body = body
         article.updateDate = Util.getNowDateStr()
 
-        val jsonStr = article.toJson()
-        writeStrFile("data/article/${article.id}.json", jsonStr)
+        //val jsonStr = article.toJson()
+        writeStrFile("data/article/${article.id}.json", article.toJson())
 
         // 파일 수정
     }
